@@ -20,7 +20,7 @@ async function run_action() {
                 core.debug(`parsedValue: ${JSON.stringify(parsedValue)}`)
                 // Assume basic JSON structure
                 for (var key in parsedValue) {
-                    setEnvironmentVar(prefix + key, parsedValue[key], maskValues)
+                    // setEnvironmentVar(prefix + key, parsedValue[key], maskValues)
                     envs.push(`${prefix + key}=${parsedValue[key]}`)
                 }
             } else {
@@ -29,7 +29,7 @@ async function run_action() {
                 var split = param.Name.split('/')
                 var envVarName = prefix + split[split.length - 1]
                 core.debug(`Using prefix + end of ssmPath for env var name: ${envVarName}`)
-                setEnvironmentVar(envVarName, parsedValue, maskValues)
+                // setEnvironmentVar(envVarName, parsedValue, maskValues)
                 envs.push(`${envVarName}=${parsedValue}`)
             }
         }
