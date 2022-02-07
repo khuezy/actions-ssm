@@ -13,22 +13,23 @@ async function run_action() {
 
         const out = '.env'
         const params = await ssm.getParameters(ssmPath, getChildren, decryption, region)
+        core.info(`params: ${JSON.stringify(params)}`)
         const envs = []
         for (let param of params) {
             const parsedValue = parseValue(param.Value)
             if (typeof(parsedValue) === 'object') {
-                core.debug(`parsedValue: ${JSON.stringify(parsedValue)}`)
+                core.info(`parsedValue: ${JSON.stringify(parsedValue)}`)
                 // Assume basic JSON structure
                 for (var key in parsedValue) {
                     // setEnvironmentVar(prefix + key, parsedValue[key], maskValues)
                     envs.push(`${prefix + key}=${parsedValue[key]}`)
                 }
             } else {
-                core.debug(`parsedValue: ${parsedValue}`)
+                core.info(`parsedValue: ${parsedValue}`)
                 // Set environment variable with ssmPath name as the env variable
                 var split = param.Name.split('/')
                 var envVarName = prefix + split[split.length - 1]
-                core.debug(`Using prefix + end of ssmPath for env var name: ${envVarName}`)
+                core.info(`Using prefix + end of ssmPath for env var name: ${envVarName}`)
                 // setEnvironmentVar(envVarName, parsedValue, maskValues)
                 envs.push(`${envVarName}=${parsedValue}`)
             }
