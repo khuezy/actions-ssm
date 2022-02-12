@@ -11,7 +11,7 @@ async function run_action() {
         const decryption = core.getInput('decryption') === 'true'
         const maskValues = core.getInput('mask-values') === 'true'
 
-        const out = '.env'
+        const out = core.getInput('out', { required: false }) || '.env'
         const params = await ssm.getParameters(ssmPath, getChildren, decryption, region)
         const envs = []
         for (let param of params) {
